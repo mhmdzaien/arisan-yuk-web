@@ -1,19 +1,18 @@
 <template>
-  <h1>Halaman Member</h1>
-  <input v-model="model.nama" type="text" />
-  <button @click="simpan">Simpan</button>
-  {{ membersCollection }}
+  <section class="col-12">
+    <h1>Halaman Member</h1>
+    <ul class="list-group">
+      <li v-for="(member, ind) in membersCollection" :key="member.id" class="list-group-item">
+        No.{{ ind + 1 }} {{ member.nama }}
+      </li>
+    </ul>
+  </section>
 </template>
 <script setup lang="ts">
 import { useCollection } from 'vuefire'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
-import { ref, type Ref } from 'vue'
 
 const memberRef = collection(db, 'members')
 const membersCollection = useCollection(memberRef)
-const model: Ref<{ nama?: string }> = ref({})
-const simpan = () => {
-  addDoc(memberRef, model.value)
-}
 </script>
