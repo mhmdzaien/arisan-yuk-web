@@ -4,6 +4,7 @@
     <FortuneWheel
       ref="wheelEl"
       style="width: 500px; max-width: 100%"
+      :key="wheelKey"
       :verify="canvasVerify"
       :canvas="canvasOptions"
       :prizes="prizesCanvas"
@@ -11,6 +12,7 @@
       @rotateEnd="onRotateEnd"
     />
   </div>
+  <button @click="wheelKey = wheelKey + 1" type="button">Ubah</button>
 </template>
 
 <script setup lang="ts">
@@ -36,6 +38,7 @@ const prizes: PrizeConfig[] = membersCollection.value.map((val, index) => {
   }
 })
 console.log(prizes)
+const wheelKey = ref(1)
 const wheelEl = ref()
 const canvasVerify = ref(false) // Whether the turntable in canvas mode is enabled for verification
 const canvasOptions: CanvasConfig = {
