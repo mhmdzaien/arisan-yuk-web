@@ -1,1 +1,5 @@
-[{ "label": "Home", "icon": "bi bi-house" }]
+[
+  { "label": "Home", "icon": "bi bi-house", "path": "/home" },
+  { "label": "Anggota", "icon": "bi bi-people", "path": "/member" },
+  { "label": "Transaksi", "icon": "bi bi-cash", "path": "/transaksi" }
+]

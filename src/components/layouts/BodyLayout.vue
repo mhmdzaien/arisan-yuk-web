@@ -3,9 +3,11 @@
   <section class="container main-container">
     <RouterView></RouterView>
   </section>
+  <BottomBar></BottomBar>
 </template>
 <script setup lang="ts">
 import SideBar from '@/components/layouts/SideBar.vue'
+import BottomBar from '@/components/layouts/BottomBar.vue'
 </script>
 <style>
 .main-container {
