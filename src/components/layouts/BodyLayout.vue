@@ -1,6 +1,14 @@
 <template>
   <SideBar></SideBar>
   <section class="container main-container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mt-1">
+      <div class="container-fluid">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </div>
+    </nav>
     <RouterView></RouterView>
   </section>
   <BottomBar></BottomBar>
