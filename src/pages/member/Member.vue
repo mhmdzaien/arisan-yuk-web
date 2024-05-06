@@ -1,5 +1,28 @@
 <template>
   <section class="col-12">
+    <nav aria-label="Page navigation example" class="d-flex flex-column">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item flex-grow-1">
+          <a
+            class="page-link d-flex justify-content-center"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            href="#"
+          >
+            <span>Om Hamdan - 10 Mei 2024</span>
+          </a>
+          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+          </ul>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
     <ul class="list-group">
       <li
         v-for="(member, ind) in membersCollection"
