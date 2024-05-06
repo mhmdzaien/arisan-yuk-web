@@ -8,7 +8,12 @@
       >
         <span class="h6 p-3">{{ ind + 1 }}</span>
         <div class="d-flex flex-column flex-grow-1">
-          <span class="fw-bold mb-1">{{ member.nama }}</span>
+          <div class="mb-1">
+            <span class="fw-bold me-2" style="font-size: 17px">
+              {{ member.nama }}
+            </span>
+            <span v-if="member.sudahDapat" class="badge bg-primary">Sudah Dapat</span>
+          </div>
           <div class="d-flex">
             <span class="badge bg-success me-1">Sebelumnya : 0</span>
             <span class="badge bg-info ms-1">Tagihan : 0</span>
