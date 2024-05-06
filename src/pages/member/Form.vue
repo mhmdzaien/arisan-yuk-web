@@ -10,6 +10,7 @@
           type="text"
           class="form-control"
           id="formGroupExampleInput"
+          v-model="member.nama"
           placeholder="Example input placeholder"
         />
       </div>
