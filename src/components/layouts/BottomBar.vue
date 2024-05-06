@@ -12,7 +12,10 @@
     </ul>
   </nav>
 </template>
-<style>
+<style scoped>
+.nav-link {
+  padding: 0 !important;
+}
 .icon-bottom {
   display: block;
   font-size: 14pt;

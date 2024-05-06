@@ -1,18 +1,20 @@
 <template>
   <SideBar></SideBar>
   <section class="container main-container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mt-1 mb-2">
-      <button type="button" class="btn btn-light text-primary ms-2">
-        <i class="bi bi-list"></i>
-      </button>
-      <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
+      <div class="container-fluid justify-content-start">
+        <button type="button" class="btn btn-light text-primary">
+          <i class="bi bi-list"></i>
+        </button>
         <ol class="breadcrumb top-breadcrumb">
           <li class="breadcrumb-item fw-bold"><span>Ba-Arisan</span></li>
           <li class="breadcrumb-item active" aria-current="page">{{ $route.name }}</li>
         </ol>
       </div>
     </nav>
-    <RouterView></RouterView>
+    <section class="content">
+      <RouterView></RouterView>
+    </section>
   </section>
   <BottomBar></BottomBar>
 </template>
@@ -27,6 +29,11 @@ import BottomBar from '@/components/layouts/BottomBar.vue'
   height: 100vh;
   overflow-y: auto;
   background-color: #d3d3d3;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.content {
+  padding: 10px;
 }
 .top-breadcrumb {
   margin: 0 !important;
