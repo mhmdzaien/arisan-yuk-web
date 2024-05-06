@@ -24,8 +24,8 @@
                             </div>
                         </section>
                         <label class="mb-1 control-label fw-bold mt-1">Nominal</label>
-                        <input type="text" v-model="modelBayar" placeholder="Ketikan Nominal" class="form-control"
-                            pattern="[0-9]*" inputmode="numeric" />
+                        <input type="text" @keypress="validateNumber" v-model="nominalFormat"
+                            placeholder="Ketikan Nominal" class="form-control" pattern="[0-9]*" inputmode="numeric" />
                         <hr />
 
                     </div>
@@ -40,11 +40,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, type ModelRef } from 'vue';
+import { ref, onMounted, type ModelRef, computed } from 'vue';
 import { Modal } from '~bootstrap';
 
 const emits = defineEmits<{ (e: 'onBayar', nominal: number): void }>()
 
+const formatter = new Intl.NumberFormat('id-ID');
 const modelBayar: ModelRef<number | undefined> = defineModel();
 const refModal = ref(null);
 let modalBayar: Modal = null;
@@ -53,6 +54,21 @@ onMounted(() => {
     modalBayar = new Modal(refModal.value, { backdrop: 'static' });
 })
 
+const nominalFormat = computed({
+    get() {
+        return formatter.format(modelBayar.value!);
+    },
+    set(newValue) {
+        modelBayar.value = Number(newValue.replace(".", ""));
+    }
+})
+const validateNumber = (evt: KeyboardEvent) => {
+    const keysAllowed: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+    const keyPressed: string = evt.key;
+    if (!keysAllowed.includes(keyPressed)) {
+        evt.preventDefault()
+    }
+}
 const show = () => {
     modalBayar.show();
 }
@@ -66,7 +82,8 @@ const saveBayar = () => {
     emits("onBayar", modelBayar.value ?? 0)
 }
 defineExpose({
-    show: show
+    show: show,
+    hide: hide
 })
 
 </script>

@@ -45,7 +45,7 @@
               <i v-if="member.sudahDapat" class="bi bi-check-circle text-success"></i>
             </div>
             <div>
-              <button class="btn btn-sm btn-outline-primary me-1" @click="modalBayar?.show()">
+              <button class="btn btn-sm btn-outline-primary me-1" @click="showBayar(member.id)">
                 <i class="bi bi-cash"></i>
               </button>
               <RouterLink :to="'/member/' + member.id" class="btn btn-sm btn-outline-primary">
@@ -57,14 +57,14 @@
           <div class="d-flex justify-content-between">
             <span class="badge bg-warning">
               Sebelumnya :
-              {{ prevIuran?.tagihanMember?.[member.id]?.bayar ?? "-" }}
+              {{ (prevIuran?.tagihanMember?.[member.id]?.bayar ?? 0) / 100 ?? "-" }}K
             </span>
             <span class="badge bg-info">
               Tagihan :
-              {{ currentIuran?.tagihanMember?.[member.id]?.total ?? "-" }}
+              {{ (currentIuran?.tagihanMember?.[member.id]?.total ?? 0) / 100 ?? "-" }}K
             </span>
             <span class="badge bg-primary"> Bayar :
-              {{ currentIuran?.tagihanMember?.[member.id]?.bayar ?? "-" }}
+              {{ (currentIuran?.tagihanMember?.[member.id]?.bayar ?? 0) / 1000 ?? "-" }}K
             </span>
           </div>
         </div>
@@ -75,7 +75,7 @@
 </template>
 <script setup lang="ts">
 import { useCollection } from 'vuefire'
-import { collection, limit, orderBy, query } from 'firebase/firestore'
+import { collection, doc, limit, orderBy, query, writeBatch } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
 import { formatDate } from '@/utils/helpers';
 import { computed, ref, type Ref } from 'vue';
@@ -89,8 +89,9 @@ const iuranRef = collection(db, 'iuran');
 const iuranCollection = useCollection<IuranDocument>(query(iuranRef, orderBy('tanggal', 'desc'), limit(iuranSize)));
 const membersCollection = useCollection(memberRef)
 const currentIndex = ref(0);
-const modalBayar = ref(null);
+const modalBayar: Ref<any> = ref(null);
 const nominalBayar: Ref<number> = ref(0);
+const bayarMemberId = ref('');
 
 const currentIuran = computed(() => {
   return iuranCollection.value.at(currentIndex.value);
@@ -100,8 +101,27 @@ const prevIuran = computed(() => {
   return iuranCollection.value.at(currentIndex.value + 1);
 })
 
-const onBayar = (nominal: number) => {
-  console.log(nominal, nominalBayar.value);
+const showBayar = (memberId: string) => {
+  bayarMemberId.value = memberId;
+  nominalBayar.value = currentIuran.value?.tagihanMember?.[memberId]?.bayar ?? 0;
+  modalBayar.value?.show()
+}
+const onBayar = async (nominal: number) => {
+  let current = Object.assign({}, iuranCollection.value.at(currentIndex.value));
+  if (!current.tagihanMember) {
+    current.tagihanMember = { [bayarMemberId.value]: { bayar: nominal, total: 0 } };
+  } else if (current.tagihanMember[bayarMemberId.value]) {
+    current.tagihanMember[bayarMemberId.value].bayar = nominal;
+  } else {
+    current.tagihanMember[bayarMemberId.value] = { bayar: nominal, total: 0 };
+
+  }
+  const batch = writeBatch(db);
+  batch.set(doc(db, `iuran/${currentIuran.value?.id}`), current);
+  batch.set(doc(db, `tagihan/${bayarMemberId.value}/iuranMember/${currentIuran.value?.id}`), { bayar: nominal });
+  await batch.commit();
+  modalBayar.value?.hide()
+
 }
 
 
