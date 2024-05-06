@@ -37,7 +37,7 @@ import BottomBar from '@/components/layouts/BottomBar.vue'
   overflow-x: auto;
   overflow-y: hidden;
 }
-. .main-container::-webkit-scrollbar {
+.main-container::-webkit-scrollbar {
   width: 10px;
 }
 
