@@ -34,14 +34,15 @@
       </ul>
     </nav>
     <ul class="list-group">
-      <li v-for="(member, ind) in membersCollection" :key="member.id" class="list-group-item d-flex align-items-center">
+      <li v-for="(member, ind) in membersCollection" :key="member.id"
+        class="list-group-item d-flex align-items-center mt-1">
         <div class="d-flex flex-column flex-grow-1">
           <div class="mb-1 d-flex justify-content-between">
             <div>
               <span class="fw-bold me-2" style="font-size: 18px">
                 {{ ind + 1 }}. {{ member.nama }}
               </span>
-              <span v-if="member.sudahDapat" class="badge bg-primary">Sudah Dapat</span>
+              <i v-if="member.sudahDapat" class="bi bi-check-circle text-success"></i>
             </div>
             <div>
               <button class="btn btn-sm btn-outline-primary me-1">
@@ -53,7 +54,7 @@
             </div>
           </div>
           <hr class="mx-2 p-0 my-2" />
-          <div class="d-flex justify-content-around">
+          <div class="d-flex justify-content-between">
             <span class="badge bg-warning">
               Sebelumnya :
               {{ prevIuran?.tagihanMember?.[member.id]?.bayar ?? "-" }}
