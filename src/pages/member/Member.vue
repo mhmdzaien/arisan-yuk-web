@@ -61,7 +61,7 @@
             </span>
             <span class="badge bg-info">
               Tagihan :
-              {{ (currentIuran?.tagihanMember?.[member.id]?.total ?? 0) / 100 ?? "-" }}K
+              {{ (currentIuran?.tagihanMember?.[member.id]?.tagihan ?? 0) / 100 ?? "-" }}K
             </span>
             <span class="badge bg-primary"> Bayar :
               {{ (currentIuran?.tagihanMember?.[member.id]?.bayar ?? 0) / 1000 ?? "-" }}K
@@ -109,11 +109,11 @@ const showBayar = (memberId: string) => {
 const onBayar = async (nominal: number) => {
   let current = Object.assign({}, iuranCollection.value.at(currentIndex.value));
   if (!current.tagihanMember) {
-    current.tagihanMember = { [bayarMemberId.value]: { bayar: nominal, total: 0 } };
+    current.tagihanMember = { [bayarMemberId.value]: { bayar: nominal, tagihan: 0 } };
   } else if (current.tagihanMember[bayarMemberId.value]) {
     current.tagihanMember[bayarMemberId.value].bayar = nominal;
   } else {
-    current.tagihanMember[bayarMemberId.value] = { bayar: nominal, total: 0 };
+    current.tagihanMember[bayarMemberId.value] = { bayar: nominal, tagihan: 0 };
 
   }
   const batch = writeBatch(db);

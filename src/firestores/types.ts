@@ -8,7 +8,7 @@ export interface IuranDocument {
   }
   tagihanMember?: {
     [key: string]: {
-      total: number
+      tagihan: number
       bayar: number
     }
   }
