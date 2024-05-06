@@ -45,7 +45,7 @@
               <i v-if="member.sudahDapat" class="bi bi-check-circle text-success"></i>
             </div>
             <div>
-              <button class="btn btn-sm btn-outline-primary me-1" @click="modalBayar.show()">
+              <button class="btn btn-sm btn-outline-primary me-1" @click="modalBayar?.show()">
                 <i class="bi bi-cash"></i>
               </button>
               <RouterLink :to="'/member/' + member.id" class="btn btn-sm btn-outline-primary">
@@ -71,30 +71,16 @@
       </li>
     </ul>
   </section>
-  <div ref="refModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <div class="modal-body">
-          <FormBayar></FormBayar>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-primary">Bayar</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ModalBayar ref="modalBayar" @on-bayar="onBayar" v-model="nominalBayar"></ModalBayar>
 </template>
 <script setup lang="ts">
-import { Modal } from 'bootstrap';
 import { useCollection } from 'vuefire'
 import { collection, limit, orderBy, query } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
 import { formatDate } from '@/utils/helpers';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import type { IuranDocument } from '@/firestores/types';
-import FormBayar from "./FormBayar.vue";
+import ModalBayar from "./ModalBayar.vue";
 
 
 const iuranSize = 5;
@@ -103,13 +89,8 @@ const iuranRef = collection(db, 'iuran');
 const iuranCollection = useCollection<IuranDocument>(query(iuranRef, orderBy('tanggal', 'desc'), limit(iuranSize)));
 const membersCollection = useCollection(memberRef)
 const currentIndex = ref(0);
-
-const refModal = ref(null);
-let modalBayar: Modal = null;
-
-onMounted(() => {
-  modalBayar = new Modal(refModal.value, { backdrop: 'static' });
-})
+const modalBayar = ref(null);
+const nominalBayar: Ref<number> = ref(0);
 
 const currentIuran = computed(() => {
   return iuranCollection.value.at(currentIndex.value);
@@ -118,6 +99,10 @@ const currentIuran = computed(() => {
 const prevIuran = computed(() => {
   return iuranCollection.value.at(currentIndex.value + 1);
 })
+
+const onBayar = (nominal: number) => {
+  console.log(nominal, nominalBayar.value);
+}
 
 
 </script>
