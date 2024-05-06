@@ -1,11 +1,14 @@
 <template>
   <SideBar></SideBar>
   <section class="container main-container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mt-1">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mt-1 mb-2">
+      <button type="button" class="btn btn-light text-primary ms-2">
+        <i class="bi bi-list"></i>
+      </button>
       <div class="container-fluid">
         <ol class="breadcrumb top-breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Library</li>
+          <li class="breadcrumb-item fw-bold"><span>Ba-Arisan</span></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ $route.name }}</li>
         </ol>
       </div>
     </nav>
@@ -18,7 +21,7 @@ import SideBar from '@/components/layouts/SideBar.vue'
 import BottomBar from '@/components/layouts/BottomBar.vue'
 </script>
 <style lang="scss">
-@import '~bootstrap/scss/bootstrap';
+@import '@/assets/scss/app.scss';
 
 .main-container {
   height: 100vh;
