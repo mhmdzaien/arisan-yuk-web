@@ -41,14 +41,14 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted, type ModelRef, computed } from 'vue';
-import { Modal } from '~bootstrap';
+import { Modal } from 'bootstrap';
 
 const emits = defineEmits<{ (e: 'onBayar', nominal: number): void }>()
 
 const formatter = new Intl.NumberFormat('id-ID');
 const modelBayar: ModelRef<number | undefined> = defineModel();
-const refModal = ref(null);
-let modalBayar: Modal = null;
+const refModal = ref();
+let modalBayar: Modal;
 
 onMounted(() => {
     modalBayar = new Modal(refModal.value, { backdrop: 'static' });
