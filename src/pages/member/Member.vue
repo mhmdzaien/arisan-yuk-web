@@ -2,7 +2,11 @@
   <section class="col-12">
     <nav aria-label="Page navigation example" class="d-flex flex-column">
       <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">
+            <i class="bi bi-arrow-left-circle"></i>
+          </a>
+        </li>
         <li class="page-item flex-grow-1">
           <a
             class="page-link d-flex justify-content-center"
@@ -20,7 +24,9 @@
             <li><a class="dropdown-item" href="#">Sign out</a></li>
           </ul>
         </li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#"> <i class="bi bi-arrow-right-circle"></i> </a>
+        </li>
       </ul>
     </nav>
     <ul class="list-group">
