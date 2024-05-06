@@ -5,35 +5,18 @@
     </div>
     <div class="card-body">
       <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Example label</label>
-        <input
-          type="text"
-          class="form-control"
-          id="formGroupExampleInput"
-          v-model="model.nama"
-          placeholder="Example input placeholder"
-        />
+        <label for="formGroupExampleInput" class="form-label">Nama</label>
+        <input type="text" class="form-control" id="formGroupExampleInput" v-model="model.nama"
+          placeholder="Example input placeholder" />
       </div>
       <div class="mb-3">
         <label class="d-block">Sudah Dapat Arisan ?</label>
         <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            v-model="model.sudahDapat"
-            :value="true"
-            type="radio"
-            id="inlineCheckbox1"
-          />
+          <input class="form-check-input" v-model="model.sudahDapat" :value="true" type="radio" id="inlineCheckbox1" />
           <label class="form-check-label" for="inlineCheckbox1">Sudah</label>
         </div>
         <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            v-model="model.sudahDapat"
-            :value="false"
-            type="radio"
-            id="inlineCheckbox2"
-          />
+          <input class="form-check-input" v-model="model.sudahDapat" :value="false" type="radio" id="inlineCheckbox2" />
           <label class="form-check-label" for="inlineCheckbox2">Belum</label>
         </div>
       </div>

@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <FortuneWheel
-      v-if="membersOptions.length > 0"
-      ref="wheel"
-      style="width: 500px; max-width: 100%"
-      :useWeight="true"
-      :prizes="membersOptions"
-      :canvas="canvasOptions"
-      @rotateEnd="spindEnd"
-    />
-  </div>
+  <section class="card">
+    <div class="card-body text-center">
+      <FortuneWheel v-if="membersOptions.length > 0" ref="wheel" style="width: 500px; max-width: 100%" :useWeight="true"
+        :prizes="membersOptions" :canvas="canvasOptions" @rotateEnd="spindEnd" />
+    </div>
+
+  </section>
 </template>
 
 <script setup lang="ts">

@@ -49,7 +49,7 @@
                 <i class="bi bi-cash"></i>
               </button>
               <RouterLink :to="'/member/' + member.id" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-search"></i>
+                <i class="bi bi-pencil"></i>
               </RouterLink>
             </div>
           </div>
