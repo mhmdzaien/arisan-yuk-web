@@ -3,7 +3,7 @@
   <section class="container main-container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light mt-1">
       <div class="container-fluid">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb top-breadcrumb">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item active" aria-current="page">Library</li>
         </ol>
@@ -19,9 +19,14 @@ import BottomBar from '@/components/layouts/BottomBar.vue'
 </script>
 <style lang="scss">
 @import '~bootstrap/scss/bootstrap';
+
 .main-container {
   height: 100vh;
   overflow-y: auto;
+  background-color: #d3d3d3;
+}
+.top-breadcrumb {
+  margin: 0 !important;
 }
 #app {
   display: flex;
@@ -32,8 +37,7 @@ import BottomBar from '@/components/layouts/BottomBar.vue'
   overflow-x: auto;
   overflow-y: hidden;
 }
-
-.main-container::-webkit-scrollbar {
+. .main-container::-webkit-scrollbar {
   width: 10px;
 }
 
