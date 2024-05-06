@@ -3,63 +3,97 @@
     <nav aria-label="Page navigation example" class="d-flex flex-column">
       <ul class="pagination">
         <li class="page-item">
-          <a class="page-link" href="#">
+          <a class="page-link" v-if="currentIndex < iuranCollection.length - 2" href="#" @click="currentIndex++">
             <i class="bi bi-arrow-left-circle"></i>
           </a>
         </li>
         <li class="page-item flex-grow-1">
-          <a
-            class="page-link d-flex justify-content-center"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            href="#"
-          >
-            <span>Om Hamdan - 10 Mei 2024</span>
+          <a class="page-link d-flex justify-content-center" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+            <span>{{ currentIuran?.tempat }} - {{ formatDate(currentIuran?.tanggal.seconds) }}
+            </span>
           </a>
-          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Selengkapnya</a></li>
+          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+            <li :key="iuran.id" v-for="iuran, index in iuranCollection">
+              <a v-if="iuran.id != currentIuran?.id && index < (iuranSize - 1)" class="dropdown-item" href="#"
+                @click="currentIndex = index">
+                {{ iuran.tempat }} - {{ formatDate(iuran.tanggal.seconds) }}
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <RouterLink class="dropdown-item" to="/iuran">Selengkapnya</RouterLink>
+            </li>
           </ul>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#"> <i class="bi bi-arrow-right-circle"></i> </a>
+          <a class="page-link" v-if="currentIndex > 0" href="#" @click="currentIndex--"> <i
+              class="bi bi-arrow-right-circle"></i> </a>
         </li>
       </ul>
     </nav>
     <ul class="list-group">
-      <li
-        v-for="(member, ind) in membersCollection"
-        :key="member.id"
-        class="list-group-item d-flex align-items-center"
-      >
-        <span class="h6 p-3">{{ ind + 1 }}</span>
+      <li v-for="(member, ind) in membersCollection" :key="member.id" class="list-group-item d-flex align-items-center">
         <div class="d-flex flex-column flex-grow-1">
-          <div class="mb-1">
-            <span class="fw-bold me-2" style="font-size: 17px">
-              {{ member.nama }}
-            </span>
-            <span v-if="member.sudahDapat" class="badge bg-primary">Sudah Dapat</span>
+          <div class="mb-1 d-flex justify-content-between">
+            <div>
+              <span class="fw-bold me-2" style="font-size: 18px">
+                {{ ind + 1 }}. {{ member.nama }}
+              </span>
+              <span v-if="member.sudahDapat" class="badge bg-primary">Sudah Dapat</span>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-outline-primary me-1">
+                <i class="bi bi-cash"></i>
+              </button>
+              <RouterLink :to="'/member/' + member.id" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-search"></i>
+              </RouterLink>
+            </div>
           </div>
-          <div class="d-flex">
-            <span class="badge bg-success me-1">Sebelumnya : 0</span>
-            <span class="badge bg-info ms-1">Tagihan : 0</span>
+          <hr class="mx-2 p-0 my-2" />
+          <div class="d-flex justify-content-around">
+            <span class="badge bg-warning">
+              Sebelumnya :
+              {{ prevIuran?.tagihanMember?.[member.id]?.bayar ?? "-" }}
+            </span>
+            <span class="badge bg-info">
+              Tagihan :
+              {{ currentIuran?.tagihanMember?.[member.id]?.total ?? "-" }}
+            </span>
+            <span class="badge bg-primary"> Bayar :
+              {{ currentIuran?.tagihanMember?.[member.id]?.bayar ?? "-" }}
+            </span>
           </div>
         </div>
-        <RouterLink :to="'/member/' + member.id" class="btn btn-sm btn-outline-primary">
-          <i class="bi bi-search"></i>
-        </RouterLink>
       </li>
     </ul>
   </section>
 </template>
 <script setup lang="ts">
 import { useCollection } from 'vuefire'
-import { collection } from 'firebase/firestore'
+import { collection, limit, orderBy, query } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
+import { formatDate } from '@/utils/helpers';
+import { computed, ref } from 'vue';
+import type { IuranDocument } from '@/firestores/types';
 
+
+const iuranSize = 5;
 const memberRef = collection(db, 'members')
+const iuranRef = collection(db, 'iuran');
+const iuranCollection = useCollection<IuranDocument>(query(iuranRef, orderBy('tanggal', 'desc'), limit(iuranSize)));
 const membersCollection = useCollection(memberRef)
+const currentIndex = ref(0);
+
+const currentIuran = computed(() => {
+  return iuranCollection.value.at(currentIndex.value);
+})
+
+const prevIuran = computed(() => {
+  return iuranCollection.value.at(currentIndex.value + 1);
+})
+
+
 </script>

@@ -1,10 +1,8 @@
 <template>
-  <nav
-    class="navbar navbar-dark bg-primary navbar-expand d-md-none d-lg-none d-xl-none fixed-bottom"
-  >
+  <nav class="navbar navbar-dark bg-primary navbar-expand d-md-none d-lg-none d-xl-none">
     <ul class="navbar-nav nav-justified w-100">
       <li v-for="menu in menus" class="nav-item" :key="menu.label">
-        <RouterLink class="nav-link" :to="menu.path" activeClass="active">
+        <RouterLink :replace="true" class="nav-link" :to="menu.path" activeClass="active">
           <i :class="menu.icon" class="icon-bottom"></i>
           {{ menu.label }}
         </RouterLink>
@@ -16,6 +14,7 @@
 .nav-link {
   padding: 0 !important;
 }
+
 .icon-bottom {
   display: block;
   font-size: 14pt;

@@ -3,7 +3,7 @@ import BodyLayout from '@/components/layouts/BodyLayout.vue'
 import HomePage from '@/pages/Home.vue'
 import MemberPage from '@/pages/member/Member.vue'
 import FormMemberPage from '@/pages/member/Form.vue'
-
+import IuranPage from '@/pages/iuran/Iuran.vue'
 import TransaksiPage from '@/pages/transaksi/Transaksi.vue'
 
 const router = createRouter({
@@ -36,6 +36,14 @@ const router = createRouter({
           path: '/transaksi',
           name: 'Transaksi',
           component: TransaksiPage
+        },
+        {
+          path: '/iuran',
+          name: 'Iuran',
+          component: IuranPage,
+          meta: {
+            canBack: true
+          }
         }
       ]
     }
