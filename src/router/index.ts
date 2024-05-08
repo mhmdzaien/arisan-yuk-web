@@ -49,7 +49,10 @@ const router = createRouter({
         {
           path: '/iuran/form/:id?',
           name: 'Form Iuran',
-          component: FormIuranPage
+          component: FormIuranPage,
+          meta: {
+            canBack: true
+          }
         }
       ]
     }

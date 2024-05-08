@@ -10,16 +10,11 @@
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Anggota Yang Dapat</label>
-        <input
-          type="text"
-          class="form-control"
-          id="formGroupExampleInput"
-          placeholder="Nama anggota"
-        />
+        <v-select v-model="model.member" :options="members"></v-select>
       </div>
     </div>
     <div class="card-footer text-end">
-      <RouterLink to="/member" class="btn btn-outline-secondary me-1">Kembali</RouterLink>
+      <Button @click="$router.back()" class="btn btn-outline-secondary me-1">Kembali</Button>
       <button :disabled="saving" type="button" @click="simpan" class="btn btn-outline-primary ms-1">
         <div v-if="saving" class="spinner-border spinner-border-sm" role="status">
           <span class="sr-only"></span>
@@ -32,9 +27,27 @@
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { ref, type Ref } from 'vue'
+import { computed, ref, type ModelRef, type Ref } from 'vue'
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
+import { useCollection } from 'vuefire'
+import { query, where, collection } from 'firebase/firestore'
+import { db } from '@/firebaseInit'
+import type { IuranDocument } from '@/firestores/types'
 
-const model: Ref<any> = defineModel({ default: {} })
+const memberRef = collection(db, 'members')
+const model: Ref<any> = ref({})
+const membersCollection = useCollection(query(memberRef, where('sudahDapat', '==', false)))
+const members = computed(() => {
+  return membersCollection.value.map((row) => {
+    return {
+      code: row.id,
+      label: row.nama
+    }
+  })
+})
 const saving = ref(false)
-const simpan = () => {}
+const simpan = () => {
+  console.log(model.value)
+}
 </script>
