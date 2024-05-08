@@ -8,8 +8,14 @@ export interface IuranDocument {
   }
   tagihanMember?: {
     [key: string]: {
-      tagihan: number
+      tagihan?: number
       bayar: number
     }
   }
+}
+
+export interface MemberDocument {
+  nama: string
+  sudahDapat: boolean
+  gelarDepan?: string
 }

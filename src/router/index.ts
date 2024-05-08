@@ -5,6 +5,7 @@ import MemberPage from '@/pages/member/Member.vue'
 import FormMemberPage from '@/pages/member/Form.vue'
 import IuranPage from '@/pages/iuran/Iuran.vue'
 import TransaksiPage from '@/pages/transaksi/Transaksi.vue'
+import FormIuranPage from '@/pages/iuran/FormIuran.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
           meta: {
             canBack: true
           }
+        },
+        {
+          path: '/iuran/form/:id?',
+          name: 'Form Iuran',
+          component: FormIuranPage
         }
       ]
     }
