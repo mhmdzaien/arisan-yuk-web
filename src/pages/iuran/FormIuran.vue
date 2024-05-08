@@ -10,7 +10,7 @@
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Anggota Yang Dapat</label>
-        <v-select v-model="model.member" :options="members"></v-select>
+        <v-select v-model="model.memberId" :options="members"></v-select>
       </div>
     </div>
     <div class="card-footer text-end">
@@ -33,6 +33,7 @@ import 'vue-select/dist/vue-select.css'
 import { useCollection } from 'vuefire'
 import { query, where, collection } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
+import { createIuran } from '@/firestores/iuran.actions'
 import type { IuranDocument } from '@/firestores/types'
 
 const memberRef = collection(db, 'members')
@@ -48,6 +49,6 @@ const members = computed(() => {
 })
 const saving = ref(false)
 const simpan = () => {
-  console.log(model.value)
+  createIuran(model.value)
 }
 </script>

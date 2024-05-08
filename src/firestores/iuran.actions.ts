@@ -1,6 +1,25 @@
 import { db } from '@/firebaseInit'
 import type { IuranDocument } from './types'
-import { doc, writeBatch } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  orderBy,
+  runTransaction,
+  writeBatch,
+  query,
+  where
+} from 'firebase/firestore'
+
+export const createIuran = async (iuran: IuranDocument) => {
+  const lastIuran = query(
+    collection(db, 'iuran'),
+    where('tanggal', '<', iuran.tanggal),
+    orderBy('tanggal', 'desc')
+  )
+  await runTransaction(db, async (transaction) => {
+    console.log(lastIuran)
+  })
+}
 
 export const bayarIuran = async (iuran: IuranDocument, memberId: string, nominal: number) => {
   if (!iuran.tagihanMember) {

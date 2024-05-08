@@ -2,6 +2,7 @@ export interface IuranDocument {
   id: string
   tempat: string
   nominal: number
+  memberId?: string
   tanggal: {
     seconds: number
     nanoseconds: number
