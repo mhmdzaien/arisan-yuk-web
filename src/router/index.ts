@@ -24,12 +24,12 @@ const router = createRouter({
           component: HomePage
         },
         {
-          path: '/member',
+          path: '/member/:iuranId?',
           name: 'Member',
           component: MemberPage
         },
         {
-          path: '/member/:id',
+          path: '/member/form/:id',
           name: 'Edit Member',
           component: FormMemberPage
         },

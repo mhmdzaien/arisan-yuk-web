@@ -3,34 +3,19 @@
     <nav aria-label="Page navigation example" class="d-flex flex-column">
       <ul class="pagination">
         <li class="page-item">
-          <a
-            class="page-link"
-            v-if="currentIndex < iuranCollection.length - 2"
-            href="#"
-            @click="currentIndex++"
-          >
+          <a class="page-link" v-if="currentIndex < iuranCollection.length - 2" href="#" @click="currentIndex++">
             <i class="bi bi-arrow-left-circle"></i>
           </a>
         </li>
         <li class="page-item flex-grow-1">
-          <a
-            class="page-link d-flex justify-content-center"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            href="#"
-          >
-            <span
-              >{{ currentIuran?.tempat }} - {{ formatDate(currentIuran?.tanggal.seconds) }}
+          <a class="page-link d-flex justify-content-center" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+            <span>{{ currentIuran?.tempat }} - {{ formatDate(currentIuran?.tanggal.seconds) }}
             </span>
           </a>
           <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
             <li :key="iuran.id" v-for="(iuran, index) in iuranCollection">
-              <a
-                v-if="iuran.id != currentIuran?.id && index < iuranSize - 1"
-                class="dropdown-item"
-                href="#"
-                @click="currentIndex = index"
-              >
+              <a v-if="iuran.id != currentIuran?.id && index < iuranSize - 1" class="dropdown-item" href="#"
+                @click="currentIndex = index">
                 {{ iuran.tempat }} - {{ formatDate(iuran.tanggal.seconds) }}
               </a>
             </li>
@@ -50,11 +35,8 @@
       </ul>
     </nav>
     <ul class="list-group">
-      <li
-        v-for="(member, ind) in membersCollection"
-        :key="member.id"
-        class="list-group-item d-flex align-items-center mt-1"
-      >
+      <li v-for="(member, ind) in membersCollection" :key="member.id"
+        class="list-group-item d-flex align-items-center mt-1">
         <div class="d-flex flex-column flex-grow-1">
           <div class="mb-1 d-flex justify-content-between">
             <div>
@@ -67,7 +49,7 @@
               <button class="btn btn-sm btn-outline-primary me-1" @click="showBayar(member.id)">
                 <i class="bi bi-cash"></i>
               </button>
-              <RouterLink :to="'/member/' + member.id" class="btn btn-sm btn-outline-primary">
+              <RouterLink :to="'/member/form/' + member.id" class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-pencil"></i>
               </RouterLink>
             </div>
@@ -90,12 +72,7 @@
       </li>
     </ul>
   </section>
-  <ModalBayar
-    ref="modalBayar"
-    :saving="savingBayar"
-    @on-bayar="onBayar"
-    v-model="nominalBayar"
-  ></ModalBayar>
+  <ModalBayar ref="modalBayar" :saving="savingBayar" @on-bayar="onBayar" v-model="nominalBayar"></ModalBayar>
 </template>
 <script setup lang="ts">
 import { useCollection } from 'vuefire'
@@ -107,7 +84,8 @@ import type { IuranDocument } from '@/firestores/types'
 import ModalBayar from './ModalBayar.vue'
 import { bayarIuran } from '@/firestores/iuran.actions'
 
-const iuranSize = 5
+
+const iuranSize = 10
 const memberRef = collection(db, 'members')
 const iuranRef = collection(db, 'iuran')
 const iuranCollection = useCollection<IuranDocument>(

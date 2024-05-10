@@ -1,5 +1,5 @@
 export interface IuranDocument {
-  id: string
+  id?: string
   tempat: string
   nominal: number
   memberId?: string
