@@ -1,4 +1,10 @@
 <template>
+  <div class="card bg-info d-flex flex-row align-items-center mb-2"><i class="bi bi-people fa-lg p-3 text-light"></i>
+    <div class="card-body">
+      <h6 class="card-subtitle mb-2 text-light">Jumlah Belum</h6>
+      <h5 class="card-title text-light">{{ membersCollection.length }} Orang</h5>
+    </div>
+  </div>
   <section class="card">
     <div class="card-body text-center">
       <FortuneWheel v-if="membersOptions.length > 0" ref="wheel" style="width: 500px; max-width: 100%" :useWeight="true"
@@ -15,6 +21,7 @@ import { collection, query, where } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
 import FortuneWheel, { type CanvasConfig } from 'vue-fortune-wheel'
 import 'vue-fortune-wheel/style.css'
+import Swal from 'sweetalert2'
 
 const memberRef = collection(db, 'members')
 const membersCollection = useCollection(query(memberRef, where('sudahDapat', '==', false)))
@@ -44,6 +51,10 @@ const membersOptions = computed(() => {
 })
 
 const spindEnd = (prize: any) => {
-  alert(prize.name)
+  Swal.fire({
+    icon: 'success',
+    title: 'Selamat',
+    html: `<b>${prize.name}</b> Mendapatkan arisan yasinan selanjutnya`
+  })
 }
 </script>
