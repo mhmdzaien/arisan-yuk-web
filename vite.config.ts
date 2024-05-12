@@ -29,7 +29,7 @@ export default defineConfig({
           },
           {
             src: 'img/screenshoots/sc2.png',
-            sizes: '356x639',
+            sizes: '358x640',
             type: 'image/png',
             form_factor: 'narrow',
             label: 'Member Page'
