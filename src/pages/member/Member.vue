@@ -1,5 +1,14 @@
 <template>
   <section class="col-12">
+    <div class="card mb-2">
+      <div class="card-body d-flex flex-row">
+        <i class="bi bi-cash p-3 text-primary" style="font-size: 40px;"></i>
+        <div class="d-flex flex-column ms-2 justify-content-center">
+          <h5 class="subtitle">Total Pemasukan</h5>
+          <h4>Rp {{ formatter.format(totalPembayaran) }}</h4>
+        </div>
+      </div>
+    </div>
     <nav aria-label="Page navigation example" class="d-flex flex-column">
       <ul class="pagination">
         <li class="page-item">
@@ -84,6 +93,7 @@ import type { IuranDocument } from '@/firestores/types'
 import ModalBayar from './ModalBayar.vue'
 import { bayarIuran } from '@/firestores/iuran.actions'
 
+const formatter = new Intl.NumberFormat('id-ID')
 
 const iuranSize = 10
 const memberRef = collection(db, 'members')
@@ -106,6 +116,12 @@ const prevIuran = computed(() => {
   return iuranCollection.value.at(currentIndex.value + 1)
 })
 
+const totalPembayaran = computed(() => {
+  if (currentIuran.value?.tagihanMember)
+    return Object.values(currentIuran.value?.tagihanMember).reduce((prevValue, currentValue) => prevValue + currentValue.bayar, 0)
+  return 0;
+})
+
 const showBayar = (memberId: string) => {
   bayarMemberId.value = memberId
   nominalBayar.value = currentIuran.value?.tagihanMember?.[memberId]?.bayar ?? 0
@@ -113,7 +129,7 @@ const showBayar = (memberId: string) => {
 }
 const onBayar = async (nominal: number) => {
   savingBayar.value = true
-  let current = Object.assign({}, iuranCollection.value.at(currentIndex.value))
+  let current = currentIuran.value;// Object.assign({id:currentIuran.value?.id}, iuranCollection.value.at(currentIndex.value))
   await bayarIuran(current, bayarMemberId.value, nominal)
   savingBayar.value = false
   modalBayar.value?.hide()
