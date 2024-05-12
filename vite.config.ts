@@ -22,17 +22,24 @@ export default defineConfig({
         screenshots: [
           {
             src: 'img/screenshoots/sc1.png',
-            sizes: '358x640',
+            sizes: '356x639',
             type: 'image/png',
             form_factor: 'narrow',
             label: 'Spin Page'
           },
           {
             src: 'img/screenshoots/sc2.png',
-            sizes: '358x640',
+            sizes: '356x639',
             type: 'image/png',
             form_factor: 'narrow',
-            label: 'Spin Page'
+            label: 'Member Page'
+          },
+          {
+            src: 'img/screenshoots/sc-desk1.png',
+            sizes: '1599x730',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Member Page Desktop'
           }
         ],
         icons: [
