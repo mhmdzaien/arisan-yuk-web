@@ -21,14 +21,14 @@ export default defineConfig({
         description: 'Aplikasi arisan yasinan dan iuran komplek',
         screenshots: [
           {
-            src: 'img/screenshoots/sc1.png',
+            src: 'img/screenshoots/sc-mobile1.png',
             sizes: '358x640',
             type: 'image/png',
             form_factor: 'narrow',
             label: 'Spin Page'
           },
           {
-            src: 'img/screenshoots/sc2.png',
+            src: 'img/screenshoots/sc-mobile2.png',
             sizes: '358x640',
             type: 'image/png',
             form_factor: 'narrow',
