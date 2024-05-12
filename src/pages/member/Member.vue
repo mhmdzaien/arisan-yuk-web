@@ -130,7 +130,7 @@ const showBayar = (memberId: string) => {
 const onBayar = async (nominal: number) => {
   savingBayar.value = true
   let current = currentIuran.value;// Object.assign({id:currentIuran.value?.id}, iuranCollection.value.at(currentIndex.value))
-  await bayarIuran(current, bayarMemberId.value, nominal)
+  await bayarIuran(current!, bayarMemberId.value, nominal)
   savingBayar.value = false
   modalBayar.value?.hide()
 }
