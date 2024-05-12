@@ -16,8 +16,8 @@ export default defineConfig({
         name: 'Arisan Yasinan',
         display: 'standalone',
         start_url: '/',
-        theme_color: '#32a852',
-        background_color: '#32a852',
+        theme_color: '#f8f9fa',
+        background_color: '#f8f9fa',
         icons: [
           {
             src: 'img/icons/icon48.png',
