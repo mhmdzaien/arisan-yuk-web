@@ -22,7 +22,7 @@ export default defineConfig({
         screenshots: [
           {
             src: 'img/screenshoots/sc1.png',
-            sizes: '356x639',
+            sizes: '358x640',
             type: 'image/png',
             form_factor: 'narrow',
             label: 'Spin Page'
