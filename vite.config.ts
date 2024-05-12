@@ -14,6 +14,8 @@ export default defineConfig({
 
       manifest: {
         name: 'Arisan Yasinan',
+        display: 'standalone',
+        start_url: '/',
         icons: [
           {
             src: 'img/icons/icon48.png',
