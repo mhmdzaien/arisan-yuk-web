@@ -18,6 +18,23 @@ export default defineConfig({
         start_url: '/',
         theme_color: '#f8f9fa',
         background_color: '#f8f9fa',
+        description: 'Aplikasi arisan yasinan dan iuran komplek',
+        screenshots: [
+          {
+            src: 'img/screenshoots/sc1.png',
+            sizes: '358x640',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'Spin Page'
+          },
+          {
+            src: 'img/screenshoots/sc2.png',
+            sizes: '358x640',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'Spin Page'
+          }
+        ],
         icons: [
           {
             src: 'img/icons/icon48.png',
