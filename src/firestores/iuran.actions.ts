@@ -19,6 +19,15 @@ export const getById = async (id: string) => {
   return data
 }
 
+export const deleteIuran = async (id: string) => {
+  const batch = writeBatch(db)
+  const members = await getDocs(query(collection(db, 'members')))
+  members.forEach((document) => {
+    batch.delete(doc(db, `tagihan/${document.id}/iuranMember`, id))
+  })
+  batch.delete(doc(db, 'iuran', id))
+  return await batch.commit()
+}
 export const saveIuran = async (iuran: IuranDocument) => {
   const iuranRef = collection(db, 'iuran')
   const lastIuranRef = await getDocs(
@@ -30,20 +39,21 @@ export const saveIuran = async (iuran: IuranDocument) => {
   const id = iuran.id ?? doc(iuranRef).id
   const batch = writeBatch(db)
   const tagihanMember: { [key: string]: { tagihan?: number; bayar: number } } = {}
-  if (lastIuranRef.size > 0) {
-    const last = lastIuranRef.docs.at(0)?.data()
-    members.docs.forEach((row) => {
-      const iuranMember = iuran.tagihanMember?.[row.id] ?? { tagihan: 0, bayar: 0 }
+  const last = lastIuranRef.docs.at(0)?.data()
+  members.docs.forEach((row) => {
+    const iuranMember = iuran.tagihanMember?.[row.id] ?? { tagihan: 0, bayar: 0 }
+    if (last) {
       const tagihanSebelumnya = Number(last?.tagihanMember[row.id]?.tagihan ?? 0)
       const pembayaranSebelumnya = Number(last?.tagihanMember[row.id]?.bayar ?? 0)
       iuranMember.tagihan = tagihanSebelumnya - pembayaranSebelumnya + iuran.nominal
-      tagihanMember[row.id] = iuranMember
-      batch.set(doc(db, `tagihan/${row.id}/iuranMember/${id}`), iuranMember)
-    })
-    iuran.tagihanMember = tagihanMember
-    batch.set(doc(db, `iuran/${id}`), iuran)
-    await batch.commit()
-  }
+    }
+    tagihanMember[row.id] = iuranMember
+    batch.set(doc(db, `tagihan/${row.id}/iuranMember/${id}`), iuranMember)
+  })
+  iuran.tagihanMember = tagihanMember
+  batch.set(doc(db, `iuran/${id}`), iuran)
+  await batch.commit()
+  return Object.assign({ id: id }, iuran)
 }
 
 export const bayarIuran = async (iuran: IuranDocument, memberId: string, nominal: number) => {
