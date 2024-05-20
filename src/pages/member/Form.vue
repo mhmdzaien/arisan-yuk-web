@@ -6,43 +6,22 @@
     <div class="card-body">
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Gelar Depan</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="model.gelarDepan"
-          placeholder="Gelar depan ex : Pa, Guru, Bapak"
-        />
+        <input type="text" class="form-control" v-model="model.gelarDepan"
+          placeholder="Gelar depan ex : Pa, Guru, Bapak" />
       </div>
       <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">Nama</label>
-        <input
-          type="text"
-          class="form-control"
-          id="formGroupExampleInput"
-          v-model="model.nama"
-          placeholder="Nama anggota"
-        />
+        <input type="text" class="form-control" id="formGroupExampleInput" v-model="model.nama"
+          placeholder="Nama anggota" />
       </div>
       <div class="mb-3">
         <label class="d-block">Sudah Dapat Arisan ?</label>
         <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            v-model="model.sudahDapat"
-            :value="true"
-            type="radio"
-            id="inlineCheckbox1"
-          />
+          <input class="form-check-input" v-model="model.sudahDapat" :value="true" type="radio" id="inlineCheckbox1" />
           <label class="form-check-label" for="inlineCheckbox1">Sudah</label>
         </div>
         <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            v-model="model.sudahDapat"
-            :value="false"
-            type="radio"
-            id="inlineCheckbox2"
-          />
+          <input class="form-check-input" v-model="model.sudahDapat" :value="false" type="radio" id="inlineCheckbox2" />
           <label class="form-check-label" for="inlineCheckbox2">Belum</label>
         </div>
       </div>
@@ -72,8 +51,7 @@ const saving = ref(false)
 
 onMounted(() => {
   getDoc(refMember).then((row) => {
-    const { gelarDepan, nama, sudahDapat } = row.data() as any
-    model.value = { gelarDepan: gelarDepan, nama: nama, sudahDapat: sudahDapat }
+    model.value = row.data() as MemberDocument;
   })
 })
 const simpan = () => {

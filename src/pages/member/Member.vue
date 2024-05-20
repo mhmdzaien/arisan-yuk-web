@@ -88,10 +88,11 @@ import { useCollection } from 'vuefire'
 import { collection, doc, limit, orderBy, query, writeBatch } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
 import { formatDate } from '@/utils/helpers'
-import { computed, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, type Ref } from 'vue'
 import type { IuranDocument } from '@/firestores/types'
 import ModalBayar from './ModalBayar.vue'
 import { bayarIuran } from '@/firestores/iuran.actions'
+import { initialTanggal } from '@/firestores/member.actions'
 
 const formatter = new Intl.NumberFormat('id-ID')
 
@@ -134,4 +135,7 @@ const onBayar = async (nominal: number) => {
   savingBayar.value = false
   modalBayar.value?.hide()
 }
+
+onMounted(() => {
+})
 </script>

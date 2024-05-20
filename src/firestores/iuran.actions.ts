@@ -8,11 +8,18 @@ import {
   writeBatch,
   query,
   where,
-  getDocs
+  getDocs,
+  getDoc,
+  type DocumentData
 } from 'firebase/firestore'
-import { useCollection } from 'vuefire'
+import { useCollection, useDocument } from 'vuefire'
 
-export const createIuran = async (iuran: IuranDocument) => {
+export const getById = async (id: string) => {
+  const data = await useDocument(doc(db, 'iuran', id)).promise.value
+  return data
+}
+
+export const saveIuran = async (iuran: IuranDocument) => {
   const iuranRef = collection(db, 'iuran')
   const lastIuranRef = await getDocs(
     query(iuranRef, where('tanggal', '<', iuran.tanggal), orderBy('tanggal', 'desc'))
@@ -20,18 +27,16 @@ export const createIuran = async (iuran: IuranDocument) => {
   const members = await getDocs(
     query(collection(db, 'members'), where('tanggalDaftar', '<=', iuran.tanggal))
   )
-  const id = doc(iuranRef).id
+  const id = iuran.id ?? doc(iuranRef).id
   const batch = writeBatch(db)
-  const tagihanMember: { [key: string]: { tagihan: number; bayar: number } } = {}
+  const tagihanMember: { [key: string]: { tagihan?: number; bayar: number } } = {}
   if (lastIuranRef.size > 0) {
     const last = lastIuranRef.docs.at(0)?.data()
     members.docs.forEach((row) => {
+      const iuranMember = iuran.tagihanMember?.[row.id] ?? { tagihan: 0, bayar: 0 }
       const tagihanSebelumnya = Number(last?.tagihanMember[row.id]?.tagihan ?? 0)
       const pembayaranSebelumnya = Number(last?.tagihanMember[row.id]?.bayar ?? 0)
-      const iuranMember = {
-        tagihan: tagihanSebelumnya - pembayaranSebelumnya + iuran.nominal,
-        bayar: 0
-      }
+      iuranMember.tagihan = tagihanSebelumnya - pembayaranSebelumnya + iuran.nominal
       tagihanMember[row.id] = iuranMember
       batch.set(doc(db, `tagihan/${row.id}/iuranMember/${id}`), iuranMember)
     })

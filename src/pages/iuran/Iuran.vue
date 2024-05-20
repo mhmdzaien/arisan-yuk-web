@@ -6,13 +6,13 @@
     </div>
     <div class="list-group flex-grow-1">
       <RouterLink :key="iuran.id" v-for="iuran in iuranCollection"
-        class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
         :to="`/member/${iuran.id}`">
         <div class="ms-2 me-auto">
           <div class="fw-bold">{{ iuran.tempat }}</div>
           Tanggal : {{ formatDate(iuran.tanggal.seconds) }}
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
+        <RouterLink class="btn btn-outline-primary" :to="`/iuran/form/${iuran.id}`">Edit</RouterLink>
       </RouterLink>
     </div>
   </div>

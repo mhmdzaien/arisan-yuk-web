@@ -4,19 +4,27 @@
       <span>Form Iuran/Yasinan</span>
     </div>
     <div class="card-body">
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Tanggal</label>
-        <VueDatePicker v-model="model.tanggal"></VueDatePicker>
+      <div v-if="isLoading" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="spinner-border spinner-border" role="status">
+          <span class="sr-only"></span>
+        </div>
+        <span class="h4">Loading Data...</span>
       </div>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Anggota Yang Dapat</label>
-        <v-select v-model="model.memberId" :options="members"></v-select>
-      </div>
-      <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Nominal Iuran</label>
-        <input type="text" @keypress="validateNumber" class="form-control" v-model="nominalFormat" pattern="[0-9]*"
-          inputmode="numeric" />
-      </div>
+      <template v-else>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Tanggal</label>
+          <VueDatePicker v-model="model.tanggal"></VueDatePicker>
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Anggota Yang Dapat</label>
+          <v-select v-model="model.memberId" :reduce="(member: any) => member.code" :options="members"></v-select>
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Nominal Iuran</label>
+          <input type="text" @keypress="validateNumber" class="form-control" v-model="nominalFormat" pattern="[0-9]*"
+            inputmode="numeric" />
+        </div>
+      </template>
     </div>
     <div class="card-footer text-end">
       <button @click="$router.back()" class="btn btn-outline-secondary me-1">Kembali</button>
@@ -32,20 +40,22 @@
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { computed, ref, type ModelRef, type Ref } from 'vue'
+import { computed, onMounted, ref, type ModelRef, type Ref } from 'vue'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import { useCollection } from 'vuefire'
-import { query, where, collection } from 'firebase/firestore'
+import { query, where, collection, getDoc } from 'firebase/firestore'
 import { db } from '@/firebaseInit'
-import { createIuran } from '@/firestores/iuran.actions'
+import { saveIuran, getById } from '@/firestores/iuran.actions'
 import type { IuranDocument } from '@/firestores/types'
 import moment from 'moment'
-
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const formatter = new Intl.NumberFormat('id-ID')
 const memberRef = collection(db, 'members')
-const model: Ref<any> = ref({ nominal: 0, tanggal: moment('2023-09-29 00:00:00', 'YYYY-MM-DD HH:II').toDate() })
+const model: Ref<any> = ref({ nominal: 0, tanggal: moment().toDate() })
 const membersCollection = useCollection(query(memberRef))
+
 const members = computed(() => {
   return membersCollection.value.map((row) => {
     return {
@@ -54,6 +64,7 @@ const members = computed(() => {
     }
   })
 })
+const isLoading = ref(false);
 const saving = ref(false)
 
 const nominalFormat = computed({
@@ -74,9 +85,30 @@ const validateNumber = (evt: KeyboardEvent) => {
 
 const simpan = () => {
   saving.value = true;
-  const { nominal, tanggal, memberId } = model.value;
-  createIuran({ tempat: 'Yasinan ' + model.value.memberId.label, nominal: nominal, tanggal: tanggal, memberId: memberId.code }).finally(() => {
+  saveIuran(model.value).finally(() => {
     saving.value = false;
   })
 }
+
+onMounted(() => {
+  if (route.params.id) {
+    isLoading.value = true;
+    getById(route.params.id as string).then(res => {
+      if (res) {
+        const data = res;
+        console.log(res)
+        data.tanggal = moment.unix(res.tanggal.seconds).toDate();
+        data.memberId = {
+          code: res.memberId,
+          label: res.tempat
+        }
+        model.value = data;
+      }
+    }).catch(err => {
+      console.log(err)
+    }).finally(() => {
+      isLoading.value = false;
+    })
+  }
+})
 </script>
